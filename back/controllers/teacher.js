@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
   const teacher = req.query.teacher;
   var condition = teacher ? { teacher: { $regex: new RegExp(teacher), $options: "i" } } : {};
 
-  Teacher.find(condition)
+  Teacher.find(req.query)
     .then(data => {
       res.send(data);
     })

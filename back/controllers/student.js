@@ -56,8 +56,12 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   console.log(req)
   const gender = req.query.gender;
-  var condition = gender ? { gender: gender } : {};
-
+  const level = req.query.level;
+  const teacher = req.query.teacher;
+  const status = req.query.status;
+  var condition = gender ? { gender: gender, level: level, teacher: teacher, status: status } : {};
+  console.log(condition)
+  
   Student.find(condition)
     .then(data => {
       res.send(data);
@@ -90,9 +94,8 @@ exports.findAllMaleStudents = (req, res) => {
 
 
 exports.findAllStudentsWithTeacherNames = async (req, res) => {
-  console.log(req.query.gender)
-  const condition = req.query.gender ? { gender: req.query.gender } : {}
-  const students = await Student.find(condition).populate("teacher").then(data => {
+
+  const students = await Student.find(req.query).populate("teacher").then(data => {
     res.send(data);
   }).catch(err => {
     res.status(500).send({
@@ -101,20 +104,6 @@ exports.findAllStudentsWithTeacherNames = async (req, res) => {
   })
 
   console.log('all students', students)
-}
-
-exports.findAllFiltered = async (req, res) => {
-  console.log(req.query.gender)
-  const condition = req.query.gender ? { gender: req.query.gender } : {}
-  const students = await Student.find(condition).populate("teacher").then(data => {
-    res.send(data);
-  }).catch(err => {
-    res.status(500).send({
-      message: err.message || "Some error occurred while retrieving students."
-    })
-  })
-
-  console.log('gender', students)
 }
 
 // Find a single Student with teacher name by id
@@ -226,19 +215,4 @@ exports.deleteAll = (req, res) => {
   
 // };
 
-// Find all Students by teacher id
-exports.findByTeacherId = (req, res) => {
-  const teacherId = req.params.teacher
-  Student.find({teacher: teacherId})
-    .then(data => {
-      if (!data)
-        res.status(404).send({ message: "Not found Student with teacher " + teacherId });
-      else res.send(data);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .send({ message: "Error retrieving Teacher with teacher=" + teacherId });
-    });
-};
 

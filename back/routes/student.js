@@ -18,7 +18,7 @@ module.exports = app => {
     router.get("/:id", students.findOneWithTeacherName);
 
     // retrieve all students by gender
-    router.get('/gender', students.findAllByGender)
+    // router.get('/gender', students.findAllByGender)
 
     // Retrieve filtered students
     //router.get(`?teacher=` + ':teacherId', students.findByTeacherId)

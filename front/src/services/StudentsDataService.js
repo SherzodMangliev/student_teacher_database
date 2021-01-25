@@ -5,6 +5,11 @@ class studentDataService {
     return http.get("/students");
   }
 
+  getAllFiltered(queryString) {
+    console.log(queryString)
+    return http.get("/students?" + queryString)
+  }
+
   get(id) {
     return http.get(`/students/${id}`);
   }
